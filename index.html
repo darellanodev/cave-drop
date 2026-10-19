@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <title>Cave Drop</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <canvas id="game" width="320" height="510"></canvas>
+        <small id="hint"
+            >Click and drag to aim a bar. Release to fix it in place.</small
+        >
+
+        <!-- Matter.js is loaded as a global (Matter). Version is fixed on purpose. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+        <script type="module" src="src/main.js"></script>
+    </body>
+</html>

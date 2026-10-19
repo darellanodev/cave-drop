@@ -1,0 +1,14 @@
+{
+  "name": "cave-drop",
+  "version": "0.1.0",
+  "description": "A 2D physics game for the web. Guide the balls to the goal with bars.",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@12.11.2",
+  "scripts": {
+    "start": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
+}

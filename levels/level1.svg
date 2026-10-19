@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Terrain: static, convex polygons -->
+  <polygon class="terrain" points="17,77 157,95 157,116 17,104"/>
+  <polygon class="terrain" points="127,175 300,162 300,191 127,193"/>
+  <polygon class="terrain" points="17,256 157,272 157,295 17,283"/>
+  <polygon class="terrain" points="82,438 307,414 307,441 82,458"/>
+  <!-- Goal: balls that enter this area are saved -->
+  <polygon id="goal" points="82,437 97,396 119,435"/>
+  <!-- Start: balls appear at the center of this circle -->
+  <circle id="start" cx="34" cy="52" r="6"/>
+</svg>
