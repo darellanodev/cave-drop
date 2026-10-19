@@ -1,4 +1,5 @@
 // Game rules and physics. This file does not draw anything.
+import Matter from "matter-js";
 import {
   H,
   W,

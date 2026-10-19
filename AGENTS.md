@@ -9,16 +9,19 @@ Cave Drop is a 2D physics game for the web. White balls fall from a start point,
 ## Stack
 
 - **Language:** plain JavaScript with ES modules. Moving to TypeScript is a future option.
-- **Physics:** [Matter.js](https://brm.io/matter-js/) 0.19.0, loaded from a CDN as the global `Matter` (fixed version).
+- **Physics:** [Matter.js](https://brm.io/matter-js/), installed from npm and imported with `import Matter from "matter-js"`.
 - **Rendering:** native 2D `<canvas>`, drawn by hand on every frame (`Matter.Render` is not used).
-- **Levels:** SVG files in `levels/`, read with `fetch` and `DOMParser`.
-- **No build step.** Package manager: **pnpm**. A local server is needed (`serve`, installed as a dev dependency).
+- **Levels:** SVG files in `levels/`. They are imported in `src/main.js` with `?url` and read with `fetch` and `DOMParser`.
+- **Tooling:** [Vite](https://vite.dev/) for the dev server and the production build. Package manager: **pnpm**.
+- **CI/CD:** GitHub Actions builds the project on every push to `main` and on pull requests. Pushes to `main` are also deployed to GitHub Pages (repository setting: Pages source = GitHub Actions).
 
 ## Project structure
 
 ```
 index.html        page and canvas
 styles.css        page styles
+vite.config.js    Vite settings
+.github/workflows/build.yml   build, and deploy to GitHub Pages
 src/main.js       startup and main loop
 src/config.js     game settings
 src/level.js      load and parse SVG levels
@@ -36,12 +39,16 @@ Keep each file focused on one job:
 
 ## How to run
 
-The game uses `fetch` and ES modules, so it needs a local server:
+Needs Node.js 20.19 or newer.
 
 ```
 pnpm install
-pnpm start
+pnpm dev        # dev server
+pnpm build      # production build in dist/
+pnpm preview    # serve the production build
 ```
+
+Run `pnpm build` before you finish a task. The CI runs the same command.
 
 ## Level format (SVG)
 
@@ -75,8 +82,9 @@ All in `src/config.js`. Change them there before changing the logic:
 - Code, comments and docs are in simple English.
 - Names in English (`balls`, `bars`, `saved`, `restart`).
 - Always use the logical space 320 × 510. Convert pointer coordinates with `toGame()` in `src/input.js`.
-- Keep CDN library versions **fixed** (never `@latest`).
-- Use **pnpm** only. Do not use `npm` or `yarn`, and do not create `package-lock.json` or `yarn.lock`.
+- Install libraries with pnpm and import them. Do not load libraries from a CDN.
+- To add a level file, import it with `?url` (for example `import url from "../levels/level2.svg?url"`). Do not use plain paths like `fetch("levels/...")`, because they break in the build.
+- Use **pnpm** only. Do not use `npm` or `yarn`, and do not create `package-lock.json` or `yarn.lock`. Commit `pnpm-lock.yaml`, because the CI uses `--frozen-lockfile`.
 - Do not use `localStorage` without a `try/catch`.
 - One export per clear purpose. Avoid circular imports.
 
@@ -96,7 +104,7 @@ All in `src/config.js`. Change them there before changing the logic:
 - [ ] PWA (`manifest.json` + service worker) to install the game on Android.
 - [ ] Support `<path>`, `<rect>` and `<circle>` in the level loader.
 - [ ] Basic tests for `parseLevel` and the game rules.
-- [ ] Move to TypeScript and a bundler (for example Vite) if the project grows.
+- [ ] Move to TypeScript if the project grows.
 
 ## Instructions for agents
 
@@ -104,4 +112,6 @@ All in `src/config.js`. Change them there before changing the logic:
 - Respect the split between `game.js`, `render.js` and `input.js`.
 - When adding levels, check that the SVG follows the format above.
 - Always test with mouse and touch (the events are `pointer*`).
+- The site is served from a sub-path (`/cave-drop/`). Keep `base: "./"` in `vite.config.js` and do not use absolute paths like `/img/a.png`.
+- Do not break the CI: `pnpm install --frozen-lockfile` and `pnpm build` must pass.
 - Do not add new dependencies without a good reason. Add them with `pnpm add` (or `pnpm add -D` for dev tools).
