@@ -108,6 +108,12 @@ export class Game {
     this.bars.push(bar);
   }
 
+  // Stop the physics. Call this when the game is not used anymore.
+  destroy() {
+    if (this.runner) Runner.stop(this.runner);
+    this.runner = null;
+  }
+
   // Balls that are still to come or still in play.
   get ballsLeft() {
     return TOTAL_BALLS - this.spawned + this.balls.length;

@@ -1,45 +1,31 @@
-// Mouse and touch input. Press to place a bar, drag to rotate it, release to fix it.
-import { W, H } from "./config.js";
+// Bar placing. Press to place a bar, drag to rotate it, release to fix it.
+// This file does not listen to the browser: main.js sends the pointer events.
 
-export function setupInput(canvas, game) {
-  const input = { preview: null }; // preview = { x, y, angle } while the player is dragging
+export function createBarPlacer(game) {
+  // preview = { x, y, angle } while the player is dragging, otherwise null.
+  const placer = {
+    preview: null,
 
-  // Convert pointer position to game coordinates.
-  const toGame = (e) => {
-    const r = canvas.getBoundingClientRect();
-    return {
-      x: ((e.clientX - r.left) * W) / r.width,
-      y: ((e.clientY - r.top) * H) / r.height,
-    };
+    down(p) {
+      placer.preview = { x: p.x, y: p.y, angle: 0 };
+    },
+
+    move(p) {
+      if (!placer.preview) return;
+      const dx = p.x - placer.preview.x;
+      const dy = p.y - placer.preview.y;
+      if (Math.hypot(dx, dy) > 4) placer.preview.angle = Math.atan2(dy, dx);
+    },
+
+    up() {
+      if (!placer.preview) return;
+      game.addBar(placer.preview.x, placer.preview.y, placer.preview.angle);
+      placer.preview = null;
+    },
+
+    cancel() {
+      placer.preview = null;
+    },
   };
-
-  canvas.addEventListener("pointerdown", (e) => {
-    if (game.status) {
-      game.restart();
-      return;
-    }
-    canvas.setPointerCapture(e.pointerId);
-    const p = toGame(e);
-    input.preview = { x: p.x, y: p.y, angle: 0 };
-  });
-
-  canvas.addEventListener("pointermove", (e) => {
-    if (!input.preview) return;
-    const p = toGame(e);
-    const dx = p.x - input.preview.x;
-    const dy = p.y - input.preview.y;
-    if (Math.hypot(dx, dy) > 4) input.preview.angle = Math.atan2(dy, dx);
-  });
-
-  canvas.addEventListener("pointerup", () => {
-    if (!input.preview) return;
-    game.addBar(input.preview.x, input.preview.y, input.preview.angle);
-    input.preview = null;
-  });
-
-  canvas.addEventListener("pointercancel", () => {
-    input.preview = null;
-  });
-
-  return input;
+  return placer;
 }

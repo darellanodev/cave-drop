@@ -1,5 +1,12 @@
 // Draw the game on the canvas.
-import { W, H, BAR_LENGTH, BALL_RADIUS, MAX_LOST } from "./config.js";
+import {
+  W,
+  H,
+  BAR_LENGTH,
+  BALL_RADIUS,
+  MAX_LOST,
+  MENU_BUTTON,
+} from "./config.js";
 
 export function createRenderer(canvas) {
   const ctx = canvas.getContext("2d");
@@ -35,6 +42,7 @@ export function createRenderer(canvas) {
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, W, 34);
     ctx.font = "14px system-ui";
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#fff";
     ctx.fillText(`${game.ballsLeft} LEFT`, 10, 17);
@@ -43,7 +51,9 @@ export function createRenderer(canvas) {
     ctx.fillStyle = "#fff";
     ctx.fillText(`${game.lost}/${MAX_LOST + 1} LOST`, 106, 17);
     ctx.fillStyle = "#ff0";
-    ctx.fillText(`★ ${game.saved}`, 215, 17);
+    ctx.fillText(`★ ${game.saved}`, 210, 17);
+    ctx.fillStyle = "#fff";
+    ctx.fillText("MENU", MENU_BUTTON.x + 14, 17);
   }
 
   function drawEndScreen(text) {
@@ -54,7 +64,7 @@ export function createRenderer(canvas) {
     ctx.font = "bold 28px system-ui";
     ctx.fillText(text, W / 2, 238);
     ctx.font = "14px system-ui";
-    ctx.fillText("Tap to restart", W / 2, 272);
+    ctx.fillText("Tap to continue", W / 2, 272);
     ctx.textAlign = "left";
   }
 

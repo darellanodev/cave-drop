@@ -35,12 +35,15 @@ index.html        page and canvas
 styles.css        page styles
 vite.config.js    Vite settings
 .github/workflows/build.yml   automatic build on push
-src/main.js       startup and main loop
+src/main.js       startup, screens and main loop
 src/config.js     game settings (size, gravity, balls, bars)
+src/levels.js     list of levels
 src/level.js      load levels from SVG
 src/game.js       rules and physics
-src/input.js      mouse and touch input
-src/render.js     canvas drawing and HUD
+src/input.js      bar placing
+src/render.js     draws the game screen and HUD
+src/ui.js         buttons and text for the menus
+src/scenes/       screens: title, level select, credits, play
 levels/           level files (.svg)
 ```
 
@@ -52,4 +55,4 @@ A level is an SVG file with `viewBox="0 0 320 510"`:
 - `<polygon id="goal" points="...">`: the goal area.
 - `<circle id="start" cx="..." cy="...">`: where balls appear.
 
-See `levels/level1.svg` for an example. More details are in `AGENTS.md`.
+See `levels/level1.svg` for an example. To add a level, register it in `src/levels.js`. More details are in `AGENTS.md`.
