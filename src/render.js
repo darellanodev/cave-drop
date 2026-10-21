@@ -70,11 +70,15 @@ export function createRenderer(canvas) {
 
   return {
     draw(game, input) {
-      const { terrain, goal, start } = game.level;
+      const { terrain, goal, start, teleport } = game.level;
       ctx.fillStyle = "#400";
       ctx.fillRect(0, 0, W, H);
       terrain.forEach((poly) => drawPolygon(poly, "#8a8fb5"));
       drawPolygon(goal, "#ff0");
+      if (teleport) {
+        drawPolygon(teleport.in, "#00f");
+        drawPolygon(teleport.out, "#00f");
+      }
       drawCircle(start.x, start.y, 6, "#000");
       game.bars.forEach((b) =>
         drawBar(b.position.x, b.position.y, b.angle, "#fff"),

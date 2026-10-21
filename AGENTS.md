@@ -77,11 +77,14 @@ The game uses a logical size of **320 × 510** (`viewBox="0 0 320 510"`). The ca
 | `<polygon class="terrain">` | Static obstacle. Balls bounce on it.                             |
 | `<polygon id="goal">`       | Goal area. If the center of a ball enters it, the ball is saved. |
 | `<circle id="start">`       | Start point (`cx`, `cy`) where balls appear.                     |
+| `<polygon id="teleport-in">`  | Optional. A ball that enters it moves to the exit, keeping its speed. |
+| `<polygon id="teleport-out">` | Optional. Only drawn. The exit is its center (average of its points). |
 
 Rules for making levels:
 
 - Use only `<polygon>` with `points="x,y x,y ..."`. This is what the loader reads.
-- Terrain polygons must be **convex**. For concave shapes, split them into several polygons, or add `poly-decomp` and use `fromVertices` with decomposition.
+- Terrain polygons can be concave. The game splits them into convex parts with `poly-decomp` (set in `src/game.js`). Keep them simple: no crossing edges and no holes.
+- A level has at most one teleport. Use both `teleport-in` and `teleport-out`, or none.
 - Do not use `transform="..."` on elements. Coordinates are read as they are.
 - To support `<path>`, `<rect>` or `<circle>` as terrain, extend `src/level.js` (`Matter.Svg.pathToVertices` only works with `<path>`).
 
@@ -125,14 +128,13 @@ All in `src/config.js`. Change them there before changing the logic:
 
 ## Port from the old Processing version
 
-The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, and 1 level. Still to port, in the old game:
+The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 2 levels (level 2 is the old `cnivel3.svg`). Still to port, in the old game:
 
 - [ ] **Sound button** on the title screen (ON/OFF) and the sound effects (button, enter goal, lost ball, level completed or failed, teleport).
 - [ ] **More levels** (the old game had 31 files, `cnivel1.svg` to `cnivel31.svg`, 500 × 800 with `<path>` shapes). They need to be converted to the 320 × 510 format.
 - [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, locked levels in red, and an `END` button after the last level.
 - [ ] **Saved progress**: the highest level reached (and the sound option) kept between sessions.
 - [ ] **Fire objects**: a ball that touches one is destroyed.
-- [ ] **Teleports**: a ball that enters one comes out of the other, keeping its speed.
 - [ ] **Pause dialog** while playing: CONTINUE, RESTART LEVEL, EXIT TO MENU.
 - [ ] **Timer** in the HUD (`minutes:seconds:tenths`) and the time to complete the level.
 - [ ] **Balls die by time**: a ball that lives too long turns grey and is lost.

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Terrain: the walls of the cave. It is concave, the game splits it into convex parts. -->
+  <polygon class="terrain" points="0.1,0 25,0 13.8,326 61.9,327.1 165.1,440.1 164.4,376 64.1,259.2 68.2,0 115,0 113.3,76.2 230,95.5 227.6,123.6 111.5,120.6 109.7,180.9 159.1,237.7 159.2,297.3 210.5,353.4 237,355.3 179.1,466.7 288.5,470.4 291.3,283.7 194.9,173.3 286.8,151 288.9,37.8 114.8,29.5 115.6,-0 320,-0 320,512 0.1,512 0.1,290.3"/>
+  <!-- Goal: balls that enter this area are saved -->
+  <polygon id="goal" points="179.2,466.7 193.8,438.6 211.3,467.7"/>
+  <!-- Teleport: a ball that enters teleport-in comes out in the center of teleport-out -->
+  <polygon id="teleport-in" points="154.7,365.1 164.5,376.3 165.2,440.1 152.8,426.5"/>
+  <polygon id="teleport-out" points="114.7,29.8 124,30.3 123.6,77.6 113.5,75.9"/>
+  <!-- Start: balls appear at the center of this circle -->
+  <circle id="start" cx="46" cy="40" r="6"/>
+</svg>

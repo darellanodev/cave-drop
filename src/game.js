@@ -1,5 +1,6 @@
 // Game rules and physics. This file does not draw anything.
 import Matter from "matter-js";
+import decomp from "poly-decomp";
 import {
   H,
   W,
@@ -12,7 +13,10 @@ import {
   GRAVITY,
 } from "./config.js";
 
-const { Engine, Runner, Bodies, Composite, Vertices } = Matter;
+const { Engine, Runner, Bodies, Body, Composite, Vertices } = Matter;
+
+// Needed to split concave terrain into convex parts.
+Matter.Common.setDecomp(decomp);
 
 export class Game {
   constructor(level) {
@@ -40,13 +44,20 @@ export class Game {
 
     for (const poly of this.level.terrain) {
       const c = Vertices.centre(poly);
-      Composite.add(
-        this.engine.world,
-        Bodies.fromVertices(c.x, c.y, [poly], {
-          isStatic: true,
-          restitution: 0.4,
-        }),
+      const body = Bodies.fromVertices(
+        c.x,
+        c.y,
+        [poly],
+        { isStatic: true, restitution: 0.4 },
+        true,
       );
+      // A static body made of several parts can end up shifted.
+      // Move it so that it matches the polygon of the level.
+      Body.translate(body, {
+        x: Math.min(...poly.map((p) => p.x)) - body.bounds.min.x,
+        y: Math.min(...poly.map((p) => p.y)) - body.bounds.min.y,
+      });
+      Composite.add(this.engine.world, body);
     }
 
     this.runner = Runner.create();
@@ -57,7 +68,7 @@ export class Game {
   update(now) {
     if (this.status) return;
 
-    const { start, goal } = this.level;
+    const { start, goal, teleport } = this.level;
 
     if (this.spawned < TOTAL_BALLS && now - this.lastSpawn > SPAWN_INTERVAL) {
       const ball = Bodies.circle(
@@ -77,12 +88,17 @@ export class Game {
     }
 
     // A ball is saved in the goal, or lost when it leaves the screen.
+    // A ball that enters the teleport moves to the exit and keeps its speed.
     this.balls = this.balls.filter((ball) => {
       const p = ball.position;
       if (Vertices.contains(goal, p)) {
         this.saved++;
         Composite.remove(this.engine.world, ball);
         return false;
+      }
+      if (teleport && Vertices.contains(teleport.in, p)) {
+        Body.setPosition(ball, teleport.exit);
+        return true;
       }
       if (p.y > H + 20 || p.x < -20 || p.x > W + 20) {
         this.lost++;
