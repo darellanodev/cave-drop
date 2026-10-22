@@ -126,12 +126,39 @@ All in `src/config.js`. Change them there before changing the logic:
 - [ ] Basic tests for `parseLevel` and the game rules.
 - [ ] Move to TypeScript if the project grows.
 
+## Levels and the old game
+
+Level 1 was made for this project. Level 2 is the old `cnivel3.svg`, and levels 3 to 17 are the other old levels without fire, in the old order:
+
+| New level | Old file |
+|---|---|
+| 2 | `cnivel3.svg` |
+| 3 | `cnivel1.svg` |
+| 4 | `cnivel2.svg` |
+| 5 | `cnivel4.svg` |
+| 6 | `cnivel5.svg` |
+| 7 | `cnivel6.svg` |
+| 8 | `cnivel7.svg` |
+| 9 | `cnivel8.svg` |
+| 10 | `cnivel9.svg` |
+| 11 | `cnivel10.svg` |
+| 12 | `cnivel11.svg` |
+| 13 | `cnivel12.svg` |
+| 14 | `cnivel13.svg` |
+| 15 | `cnivel14.svg` |
+| 16 | `cnivel15.svg` |
+| 17 | `cnivel16.svg` |
+
+The old levels are 500 × 800 and use `<path>`. They were converted to 320 × 510 `<polygon>` with a scale of 0.64. The start position of the old levels came from a server, so the `start` circle of each level was chosen by hand (always at `y = 40`, under the top bar). Change it in the SVG if a level feels too easy or too hard.
+
+The level select shows up to 5 rows of 4 buttons (20 levels). For more levels, the pages (`<<` and `>>`) must be ported first.
+
 ## Port from the old Processing version
 
-The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 2 levels (level 2 is the old `cnivel3.svg`). Still to port, in the old game:
+The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 17 levels (all the old levels without fire, `cnivel1` to `cnivel16`). Still to port, in the old game:
 
 - [ ] **Sound button** on the title screen (ON/OFF) and the sound effects (button, enter goal, lost ball, level completed or failed, teleport).
-- [ ] **More levels** (the old game had 31 files, `cnivel1.svg` to `cnivel31.svg`, 500 × 800 with `<path>` shapes). They need to be converted to the 320 × 510 format.
+- [ ] **Levels with fire** (`cnivel17.svg` to `cnivel31.svg`, 15 levels). They need the fire object first. After that, convert them like the others.
 - [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, locked levels in red, and an `END` button after the last level.
 - [ ] **Saved progress**: the highest level reached (and the sound option) kept between sessions.
 - [ ] **Fire objects**: a ball that touches one is destroyed.

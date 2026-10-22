@@ -1,13 +1,13 @@
-// Level select screen: a 4 x 4 grid. Only the levels in LEVELS are shown.
+// Level select screen: a grid with 4 columns. Only the levels in LEVELS are shown.
 import { W } from "../config.js";
 import { LEVELS, getLevel } from "../levels.js";
 import { drawBackground, drawButton, drawText, inside } from "../ui.js";
 
 const COLUMNS = 4;
-const BOX = 56; // size of each level button
-const STEP = 74; // distance between buttons
+const BOX = 52; // size of each level button
+const STEP = 66; // distance between buttons
 const GRID_X = (W - (STEP * (COLUMNS - 1) + BOX)) / 2;
-const GRID_Y = 110;
+const GRID_Y = 100;
 const BACK_BUTTON = { x: 60, y: 440, w: 200, h: 46 };
 
 // Position of the button for each level.

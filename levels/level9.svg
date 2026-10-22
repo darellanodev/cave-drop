@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Level 9: port of the old cnivel8.svg (converted from 500 x 800 to 320 x 510). -->
+  <!-- Terrain: static polygons. They can be concave. -->
+  <polygon class="terrain" points="253.9,454 302.7,428.2 315.9,512 234.7,512"/>
+  <polygon class="terrain" points="0,104.6 198,178 220.7,111.2 240.7,118.8 217.7,184.9 320,224.9 320,355.9 240,327.3 251.7,230.9 0,140.5"/>
+  <!-- Goal: balls that enter this area are saved -->
+  <polygon id="goal" points="260.2,449.9 261,395.1 294.6,431.8"/>
+  <!-- Teleport: a ball that enters teleport-in comes out in the center of teleport-out -->
+  <polygon id="teleport-in" points="236.1,132.5 248.1,137 229.9,189.4 218,184.8"/>
+  <polygon id="teleport-out" points="238.5,237.5 250.4,239.6 244.9,285.8 232.5,283.2"/>
+  <!-- Start: balls appear at the center of this circle (chosen by hand, the old game got it from a server) -->
+  <circle id="start" cx="160" cy="40" r="6"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Level 8: port of the old cnivel7.svg (converted from 500 x 800 to 320 x 510). -->
+  <!-- Terrain: static polygons. They can be concave. -->
+  <polygon class="terrain" points="157.2,512 166,420.1 116.7,458.2 131.7,512"/>
+  <polygon class="terrain" points="188.8,264.1 127.8,272.9 121.2,0 99.5,0 101.8,296.7 113.8,363.4 157.6,339.1 127.7,296.4 187.8,293.2"/>
+  <!-- Goal: balls that enter this area are saved -->
+  <polygon id="goal" points="188.9,263.8 171,218.5 151.3,269"/>
+  <!-- Start: balls appear at the center of this circle (chosen by hand, the old game got it from a server) -->
+  <circle id="start" cx="220" cy="40" r="6"/>
+</svg>
