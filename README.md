@@ -54,6 +54,7 @@ A level is an SVG file with `viewBox="0 0 320 510"`:
 - `<polygon class="terrain" points="...">`: solid obstacles (can be concave, but keep them simple).
 - `<polygon id="goal" points="...">`: the goal area.
 - `<circle id="start" cx="..." cy="...">`: where balls appear.
+- `<polygon class="fire" points="...">` (optional, any number): a ball that touches fire is lost.
 - `<polygon id="teleport-in">` and `<polygon id="teleport-out">` (optional): a ball that enters `teleport-in` comes out at the center of `teleport-out`.
 
-See `levels/level1.svg` and `levels/level2.svg` (with a teleport) for examples. To add a level, register it in `src/levels.js`. More details are in `AGENTS.md`.
+See `levels/level1.svg` and `levels/level2.svg` (with a teleport) and `levels/level18.svg` (with fire) for examples. To add a level, register it in `src/levels.js`. More details are in `AGENTS.md`.

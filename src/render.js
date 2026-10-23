@@ -70,10 +70,11 @@ export function createRenderer(canvas) {
 
   return {
     draw(game, input) {
-      const { terrain, goal, start, teleport } = game.level;
+      const { terrain, fire, goal, start, teleport } = game.level;
       ctx.fillStyle = "#400";
       ctx.fillRect(0, 0, W, H);
       terrain.forEach((poly) => drawPolygon(poly, "#8a8fb5"));
+      fire.forEach((poly) => drawPolygon(poly, "#f00"));
       drawPolygon(goal, "#ff0");
       if (teleport) {
         drawPolygon(teleport.in, "#00f");

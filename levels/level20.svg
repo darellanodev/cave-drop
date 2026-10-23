@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Level 20: port of the old cnivel19.svg (converted from 500 x 800 to 320 x 510). -->
+  <!-- Terrain: static polygons. They can be concave. -->
+  <polygon class="terrain" points="227.9,387.1 238.4,337.7 87.2,333.3 102.2,390.6 -0,391.8 -0,443.7 154.1,415.4"/>
+  <polygon class="terrain" points="292.9,375.3 235.6,446.6 217.8,512 279.2,512 320,398.5 320,78.4 184.2,209.6 196,260.9 246.6,278.6"/>
+  <!-- Fire: a ball that touches it is lost -->
+  <polygon class="fire" points="100.4,389.5 0,390.1 0,347.1 89.1,347.2"/>
+  <polygon class="fire" points="108.1,512 121.4,504.2 176.5,497.1 223.9,484.2 215.9,512"/>
+  <!-- Goal: balls that enter this area are saved -->
+  <polygon id="goal" points="49.4,510.1 25.2,464.2 1.2,510"/>
+  <!-- Start: balls appear at the center of this circle (chosen by hand, the old game got it from a server) -->
+  <circle id="start" cx="150" cy="40" r="6"/>
+</svg>

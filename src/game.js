@@ -13,10 +13,29 @@ import {
   GRAVITY,
 } from "./config.js";
 
-const { Engine, Runner, Bodies, Body, Composite, Vertices } = Matter;
+const { Engine, Events, Runner, Bodies, Body, Composite, Vertices } = Matter;
 
 // Needed to split concave terrain into convex parts.
 Matter.Common.setDecomp(decomp);
+
+// Make a static body from a polygon of the level.
+function createStaticBody(poly, options) {
+  const c = Vertices.centre(poly);
+  const body = Bodies.fromVertices(
+    c.x,
+    c.y,
+    [poly],
+    { isStatic: true, ...options },
+    true,
+  );
+  // A static body made of several parts can end up shifted.
+  // Move it so that it matches the polygon of the level.
+  Body.translate(body, {
+    x: Math.min(...poly.map((p) => p.x)) - body.bounds.min.x,
+    y: Math.min(...poly.map((p) => p.y)) - body.bounds.min.y,
+  });
+  return body;
+}
 
 export class Game {
   constructor(level) {
@@ -43,22 +62,27 @@ export class Game {
     this.status = null; // null while playing, then 'YOU WIN' or 'YOU LOSE'
 
     for (const poly of this.level.terrain) {
-      const c = Vertices.centre(poly);
-      const body = Bodies.fromVertices(
-        c.x,
-        c.y,
-        [poly],
-        { isStatic: true, restitution: 0.4 },
-        true,
+      Composite.add(
+        this.engine.world,
+        createStaticBody(poly, { restitution: 0.4 }),
       );
-      // A static body made of several parts can end up shifted.
-      // Move it so that it matches the polygon of the level.
-      Body.translate(body, {
-        x: Math.min(...poly.map((p) => p.x)) - body.bounds.min.x,
-        y: Math.min(...poly.map((p) => p.y)) - body.bounds.min.y,
-      });
-      Composite.add(this.engine.world, body);
     }
+
+    // Fire is solid like the terrain. A ball that touches it is marked as burned.
+    for (const poly of this.level.fire) {
+      Composite.add(
+        this.engine.world,
+        createStaticBody(poly, { restitution: 0.5, isFire: true }),
+      );
+    }
+    Events.on(this.engine, "collisionStart", (event) => {
+      for (const pair of event.pairs) {
+        const a = pair.bodyA.parent;
+        const b = pair.bodyB.parent;
+        if (a.isFire && b.label === "ball") b.burned = true;
+        if (b.isFire && a.label === "ball") a.burned = true;
+      }
+    });
 
     this.runner = Runner.create();
     Runner.run(this.runner, this.engine);
@@ -76,6 +100,7 @@ export class Game {
         start.y,
         BALL_RADIUS,
         {
+          label: "ball",
           restitution: 0.6,
           friction: 0.01,
           frictionAir: 0.001,
@@ -87,10 +112,15 @@ export class Game {
       this.lastSpawn = now;
     }
 
-    // A ball is saved in the goal, or lost when it leaves the screen.
+    // A ball is saved in the goal, or lost when it leaves the screen or touches fire.
     // A ball that enters the teleport moves to the exit and keeps its speed.
     this.balls = this.balls.filter((ball) => {
       const p = ball.position;
+      if (ball.burned) {
+        this.lost++;
+        Composite.remove(this.engine.world, ball);
+        return false;
+      }
       if (Vertices.contains(goal, p)) {
         this.saved++;
         Composite.remove(this.engine.world, ball);

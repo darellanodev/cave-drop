@@ -1,6 +1,7 @@
 // Load a level from an SVG file.
 // Expected elements: <polygon class="terrain">, <polygon id="goal">, <circle id="start">
-// Optional: <polygon id="teleport-in"> and <polygon id="teleport-out"> (a teleport).
+// Optional: <polygon id="teleport-in"> and <polygon id="teleport-out"> (a teleport),
+// and any number of <polygon class="fire"> (a ball that touches fire is lost).
 
 function parsePoints(el) {
   return el
@@ -44,6 +45,7 @@ export function parseLevel(svgText) {
     terrain: [...doc.querySelectorAll(".terrain")].map(parsePoints),
     goal: parsePoints(goalEl),
     start: { x: +startEl.getAttribute("cx"), y: +startEl.getAttribute("cy") },
+    fire: [...doc.querySelectorAll(".fire")].map(parsePoints),
     teleport,
   };
 }

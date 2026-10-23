@@ -77,6 +77,7 @@ The game uses a logical size of **320 × 510** (`viewBox="0 0 320 510"`). The ca
 | `<polygon class="terrain">` | Static obstacle. Balls bounce on it.                             |
 | `<polygon id="goal">`       | Goal area. If the center of a ball enters it, the ball is saved. |
 | `<circle id="start">`       | Start point (`cx`, `cy`) where balls appear.                     |
+| `<polygon class="fire">`     | Optional, any number. Solid like the terrain, drawn in red. A ball that touches it is lost. |
 | `<polygon id="teleport-in">`  | Optional. A ball that enters it moves to the exit, keeping its speed. |
 | `<polygon id="teleport-out">` | Optional. Only drawn. The exit is its center (average of its points). |
 
@@ -128,7 +129,7 @@ All in `src/config.js`. Change them there before changing the logic:
 
 ## Levels and the old game
 
-Level 1 was made for this project. Level 2 is the old `cnivel3.svg`, and levels 3 to 17 are the other old levels without fire, in the old order:
+Level 1 was made for this project. Level 2 is the old `cnivel3.svg`. Levels 3 to 17 are the other old levels without fire (`cnivel1` to `cnivel16`), and levels 18 to 32 are the old levels with fire (`cnivel17` to `cnivel31`), all in the old order:
 
 | New level | Old file |
 |---|---|
@@ -148,20 +149,33 @@ Level 1 was made for this project. Level 2 is the old `cnivel3.svg`, and levels 
 | 15 | `cnivel14.svg` |
 | 16 | `cnivel15.svg` |
 | 17 | `cnivel16.svg` |
+| 18 | `cnivel17.svg` |
+| 19 | `cnivel18.svg` |
+| 20 | `cnivel19.svg` |
+| 21 | `cnivel20.svg` |
+| 22 | `cnivel21.svg` |
+| 23 | `cnivel22.svg` |
+| 24 | `cnivel23.svg` |
+| 25 | `cnivel24.svg` |
+| 26 | `cnivel25.svg` |
+| 27 | `cnivel26.svg` |
+| 28 | `cnivel27.svg` |
+| 29 | `cnivel28.svg` |
+| 30 | `cnivel29.svg` |
+| 31 | `cnivel30.svg` |
+| 32 | `cnivel31.svg` |
 
 The old levels are 500 × 800 and use `<path>`. They were converted to 320 × 510 `<polygon>` with a scale of 0.64. The start position of the old levels came from a server, so the `start` circle of each level was chosen by hand (always at `y = 40`, under the top bar). Change it in the SVG if a level feels too easy or too hard.
 
-The level select shows up to 5 rows of 4 buttons (20 levels). For more levels, the pages (`<<` and `>>`) must be ported first.
+The level select shows 6 columns of buttons (up to 36 levels, 6 rows). For more levels, the pages (`<<` and `>>`) must be ported first.
 
 ## Port from the old Processing version
 
-The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 17 levels (all the old levels without fire, `cnivel1` to `cnivel16`). Still to port, in the old game:
+The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 32 levels (all the old levels from `cnivel1` to `cnivel31`). Still to port, in the old game:
 
 - [ ] **Sound button** on the title screen (ON/OFF) and the sound effects (button, enter goal, lost ball, level completed or failed, teleport).
-- [ ] **Levels with fire** (`cnivel17.svg` to `cnivel31.svg`, 15 levels). They need the fire object first. After that, convert them like the others.
 - [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, locked levels in red, and an `END` button after the last level.
 - [ ] **Saved progress**: the highest level reached (and the sound option) kept between sessions.
-- [ ] **Fire objects**: a ball that touches one is destroyed.
 - [ ] **Pause dialog** while playing: CONTINUE, RESTART LEVEL, EXIT TO MENU.
 - [ ] **Timer** in the HUD (`minutes:seconds:tenths`) and the time to complete the level.
 - [ ] **Balls die by time**: a ball that lives too long turns grey and is lost.

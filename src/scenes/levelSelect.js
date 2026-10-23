@@ -1,11 +1,11 @@
-// Level select screen: a grid with 4 columns. Only the levels in LEVELS are shown.
+// Level select screen: a grid with 6 columns (up to 36 levels). Only the levels in LEVELS are shown.
 import { W } from "../config.js";
 import { LEVELS, getLevel } from "../levels.js";
 import { drawBackground, drawButton, drawText, inside } from "../ui.js";
 
-const COLUMNS = 4;
-const BOX = 52; // size of each level button
-const STEP = 66; // distance between buttons
+const COLUMNS = 6;
+const BOX = 40; // size of each level button
+const STEP = 48; // distance between buttons
 const GRID_X = (W - (STEP * (COLUMNS - 1) + BOX)) / 2;
 const GRID_Y = 100;
 const BACK_BUTTON = { x: 60, y: 440, w: 200, h: 46 };
@@ -30,7 +30,7 @@ export function createLevelSelectScene({ ctx, goTo }) {
       drawBackground(ctx);
       drawText(ctx, "SELECT THE ROOM", W / 2, 60, { size: 22, bold: true });
       buttons.forEach(({ entry, rect }) =>
-        drawButton(ctx, rect, String(entry.id), { filled: true, size: 22 }),
+        drawButton(ctx, rect, String(entry.id), { filled: true, size: 18 }),
       );
       drawButton(ctx, BACK_BUTTON, "<<");
     },
