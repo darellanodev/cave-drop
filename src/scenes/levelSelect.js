@@ -1,6 +1,8 @@
 // Level select screen: a grid with 6 columns (up to 36 levels). Only the levels in LEVELS are shown.
+// Levels that are not unlocked yet are red and cannot be played.
 import { W } from "../config.js";
 import { LEVELS, getLevel } from "../levels.js";
+import { getUnlocked } from "../progress.js";
 import { drawBackground, drawButton, drawText, inside } from "../ui.js";
 
 const COLUMNS = 6;
@@ -29,8 +31,13 @@ export function createLevelSelectScene({ ctx, goTo }) {
     draw() {
       drawBackground(ctx);
       drawText(ctx, "SELECT THE ROOM", W / 2, 60, { size: 22, bold: true });
+      const unlocked = getUnlocked();
       buttons.forEach(({ entry, rect }) =>
-        drawButton(ctx, rect, String(entry.id), { filled: true, size: 18 }),
+        drawButton(ctx, rect, String(entry.id), {
+          filled: true,
+          size: 18,
+          ...(entry.id > unlocked && { fillColor: "#f33", textColor: "#fff" }),
+        }),
       );
       drawButton(ctx, BACK_BUTTON, "<<");
     },
@@ -41,10 +48,10 @@ export function createLevelSelectScene({ ctx, goTo }) {
         return;
       }
       const hit = buttons.find((b) => inside(p, b.rect));
-      if (!hit) return;
+      if (!hit || hit.entry.id > getUnlocked()) return;
       scene.loading = true;
       try {
-        goTo("play", { level: await getLevel(hit.entry) });
+        goTo("play", { level: await getLevel(hit.entry), id: hit.entry.id });
       } catch (err) {
         console.error(err);
         scene.hint = `Error: ${err.message}`;

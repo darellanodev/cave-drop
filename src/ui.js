@@ -90,7 +90,12 @@ export function drawText(ctx, text, x, y, { size = 16, color = "#fff", bold = fa
 
 // Button with cut corners, like the old title screen.
 // Default: outline with white text. filled: white box with black text.
-export function drawButton(ctx, rect, label, { filled = false, size = 18 } = {}) {
+export function drawButton(
+  ctx,
+  rect,
+  label,
+  { filled = false, size = 18, fillColor = "#fff", textColor = "#000" } = {},
+) {
   const { x, y, w, h } = rect;
   const c = Math.min(8, h / 3); // size of the cut corners
   ctx.beginPath();
@@ -104,7 +109,7 @@ export function drawButton(ctx, rect, label, { filled = false, size = 18 } = {})
   ctx.lineTo(x, y + c);
   ctx.closePath();
   if (filled) {
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = fillColor;
     ctx.fill();
   } else {
     ctx.strokeStyle = "#fff";
@@ -113,6 +118,6 @@ export function drawButton(ctx, rect, label, { filled = false, size = 18 } = {})
   }
   drawText(ctx, label, x + w / 2, y + h / 2 + 1, {
     size,
-    color: filled ? "#000" : "#fff",
+    color: filled ? textColor : "#fff",
   });
 }

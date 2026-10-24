@@ -31,6 +31,7 @@ src/level.js      load and parse SVG levels
 src/game.js       rules and physics (no drawing)
 src/input.js      bar placing (press, rotate, release)
 src/render.js     draws the game screen and HUD
+src/progress.js   saved progress (highest unlocked level)
 src/ui.js         helpers for menu screens (background, buttons, text, hit test)
 src/scenes/       one file per screen: title, levelSelect, credits, play
 src/assets/       images (logo)
@@ -100,6 +101,17 @@ Rules for making levels:
 - The PWA is only active in the build. Test it with `pnpm build` and `pnpm preview`.
 - Icons: `public/icons/`. Keep the 4 files and their names, or change them in `vite.config.js` and `index.html`.
 
+## Progress and locked levels
+
+- Level 1 is always open. Winning a level unlocks the next one. Locked levels are red in the level select and cannot be played.
+- `src/progress.js` keeps the highest unlocked level in `localStorage` (key `cave-drop-progress`, value `{ "unlocked": 5 }`). If the storage fails, the progress is kept only until the page is closed.
+- To test levels without playing the previous ones, open the browser console on the game page, run this, and reload the page:
+  ```js
+  localStorage.setItem("cave-drop-progress", JSON.stringify({ unlocked: 32 }));
+  ```
+  To start again from level 1: `localStorage.removeItem("cave-drop-progress")` and reload.
+- When a level is added to `LEVELS`, nothing else is needed: it unlocks after the level before it.
+
 ## Gameplay settings
 
 All in `src/config.js`. Change them there before changing the logic:
@@ -133,7 +145,7 @@ All in `src/config.js`. Change them there before changing the logic:
 - [ ] Limit the number of bars per level and show a counter in the HUD.
 - [ ] Special elements by `id`/`class` in the SVG (trampolines with more bounce, sensors, moving obstacles).
 - [ ] Sounds (bounce, goal, lost ball).
-- [ ] Save progress (finished levels, score), with `try/catch` around storage.
+- [ ] Save more progress (score, best time). The unlocked levels are already saved.
 - [ ] Support `<path>`, `<rect>` and `<circle>` in the level loader.
 - [ ] Basic tests for `parseLevel` and the game rules.
 - [ ] Move to TypeScript if the project grows.
@@ -182,11 +194,11 @@ The level select shows 6 columns of buttons (up to 36 levels, 6 rows). For more 
 
 ## Port from the old Processing version
 
-The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select, teleports, and 32 levels (all the old levels from `cnivel1` to `cnivel31`). Still to port, in the old game:
+The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select with locked levels and saved progress, teleports, and 32 levels (all the old levels from `cnivel1` to `cnivel31`). Still to port, in the old game:
 
 - [ ] **Sound button** on the title screen (ON/OFF) and the sound effects (button, enter goal, lost ball, level completed or failed, teleport).
-- [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, locked levels in red, and an `END` button after the last level.
-- [ ] **Saved progress**: the highest level reached (and the sound option) kept between sessions.
+- [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, and an `END` button after the last level.
+- [ ] **Save the sound option** between sessions (when the sound is ported). Use `src/progress.js` as the example.
 - [ ] **Pause dialog** while playing: CONTINUE, RESTART LEVEL, EXIT TO MENU.
 - [ ] **Timer** in the HUD (`minutes:seconds:tenths`) and the time to complete the level.
 - [ ] **Color flash** in the HUD when a ball is saved or lost.

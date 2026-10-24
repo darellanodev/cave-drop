@@ -2,6 +2,8 @@
 
 A 2D physics game for the web. It is a port of my old Processing game for Android. White balls fall from the start point and bounce on the terrain. Place thin bars to guide them to the yellow goal. A bar is fixed when you release the mouse (or finger), and it cannot be removed.
 
+The game has 32 levels. Level 1 is open, and winning a level unlocks the next one. Your progress is saved in the browser.
+
 Built with plain JavaScript (ES modules), HTML canvas and [Matter.js](https://brm.io/matter-js/). It uses [Vite](https://vite.dev/) for development and builds, and [pnpm](https://pnpm.io/) as package manager.
 
 ## Run it
