@@ -18,6 +18,8 @@ const { Engine, Events, Runner, Bodies, Body, Composite, Vertices } = Matter;
 // Needed to split concave terrain into convex parts.
 Matter.Common.setDecomp(decomp);
 
+Matter.Resolver._restingThresh = 0.1;
+
 // Make a static body from a polygon of the level.
 function createStaticBody(poly, options) {
   const c = Vertices.centre(poly);
@@ -64,7 +66,7 @@ export class Game {
     for (const poly of this.level.terrain) {
       Composite.add(
         this.engine.world,
-        createStaticBody(poly, { restitution: 0.4 }),
+        createStaticBody(poly, { restitution: 0.8 }),
       );
     }
 
@@ -72,7 +74,7 @@ export class Game {
     for (const poly of this.level.fire) {
       Composite.add(
         this.engine.world,
-        createStaticBody(poly, { restitution: 0.5, isFire: true }),
+        createStaticBody(poly, { restitution: 0.8, isFire: true }),
       );
     }
     Events.on(this.engine, "collisionStart", (event) => {
@@ -101,9 +103,9 @@ export class Game {
         BALL_RADIUS,
         {
           label: "ball",
-          restitution: 0.6,
-          friction: 0.01,
-          frictionAir: 0.001,
+          restitution: 0.8,
+          friction: 0,
+          frictionAir: 0,
         },
       );
       Composite.add(this.engine.world, ball);
@@ -148,7 +150,7 @@ export class Game {
     const bar = Bodies.rectangle(x, y, BAR_LENGTH, BAR_THICKNESS, {
       isStatic: true,
       angle,
-      restitution: 0.5,
+      restitution: 0.7,
     });
     Composite.add(this.engine.world, bar);
     this.bars.push(bar);

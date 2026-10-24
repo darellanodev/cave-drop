@@ -12,7 +12,7 @@ export const BALL_RADIUS = 5;
 export const BAR_LENGTH = 44;
 export const BAR_THICKNESS = 4;
 
-export const GRAVITY = 0.8;
+export const GRAVITY = 0.4;
 
 // "MENU" button in the top bar while playing (leaves the level).
 export const MENU_BUTTON = { x: 252, y: 0, w: 68, h: 34 };
