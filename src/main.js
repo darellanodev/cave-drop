@@ -3,11 +3,25 @@ import { createCreditsScene } from "./scenes/credits.js";
 import { createLevelSelectScene } from "./scenes/levelSelect.js";
 import { createPlayScene } from "./scenes/play.js";
 import { createTitleScene } from "./scenes/title.js";
+import { W, H } from "./config.js";
 import { toGame } from "./ui.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const hint = document.getElementById("hint");
+
+// Draw the canvas with the real pixels of the screen, so it is sharp on phones.
+// The game does not notice it: everything still uses the logical size W x H.
+function resizeCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width) return;
+  const scale = (rect.width * (window.devicePixelRatio || 1)) / W;
+  canvas.width = Math.round(W * scale);
+  canvas.height = Math.round(H * scale);
+  ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
+}
+new ResizeObserver(resizeCanvas).observe(canvas);
+resizeCanvas();
 
 // Every scene has: update(now), draw(), pointerDown(p), and optionally
 // enter(params), exit(), pointerMove(p), pointerUp(p), pointerCancel().

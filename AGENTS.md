@@ -13,6 +13,7 @@ Cave Drop is a 2D physics game for the web. White balls fall from a start point,
 - **Rendering:** native 2D `<canvas>`, drawn by hand on every frame (`Matter.Render` is not used).
 - **Levels:** SVG files in `levels/`. They are imported in `src/main.js` with `?url` and read with `fetch` and `DOMParser`.
 - **Tooling:** [Vite](https://vite.dev/) for the dev server and the production build. Package manager: **pnpm**.
+- **PWA:** [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) makes the web manifest and the service worker in the build. The game can be installed and works offline.
 - **CI/CD:** GitHub Actions builds the project on every push to `main` and on pull requests. Pushes to `main` are also deployed to GitHub Pages (repository setting: Pages source = GitHub Actions).
 
 ## Project structure
@@ -20,7 +21,8 @@ Cave Drop is a 2D physics game for the web. White balls fall from a start point,
 ```
 index.html        page and canvas
 styles.css        page styles
-vite.config.js    Vite settings
+vite.config.js    Vite settings and PWA settings (manifest, offline files)
+public/icons/     app icons
 .github/workflows/build.yml   build, and deploy to GitHub Pages
 src/main.js       startup, scene switching, main loop, pointer events
 src/config.js     game settings
@@ -89,6 +91,15 @@ Rules for making levels:
 - Do not use `transform="..."` on elements. Coordinates are read as they are.
 - To support `<path>`, `<rect>` or `<circle>` as terrain, extend `src/level.js` (`Matter.Svg.pathToVertices` only works with `<path>`).
 
+## Phones and PWA
+
+- The game works in the browser and also as an installed app. Do not break the normal browser view.
+- The size on screen comes from the CSS in `styles.css`. On phones, tablets and installed apps (`pointer: coarse` or `display-mode: standalone/fullscreen`) the canvas fills the screen height and keeps the proportion 320 × 510. On desktop it keeps its normal size.
+- The pixels of the canvas are set in `src/main.js` (`resizeCanvas`) to match the screen, so it is sharp on phones. The game code does not change: always use the logical size `W` × `H`. Do not set a CSS size that depends on `canvas.width`.
+- The service worker saves the built files in the phone. Files are listed by type in `workbox.globPatterns` in `vite.config.js`. If you add a new file type (for example `.mp3` or `.woff2`), add it to that list.
+- The PWA is only active in the build. Test it with `pnpm build` and `pnpm preview`.
+- Icons: `public/icons/`. Keep the 4 files and their names, or change them in `vite.config.js` and `index.html`.
+
 ## Gameplay settings
 
 All in `src/config.js`. Change them there before changing the logic:
@@ -122,7 +133,6 @@ All in `src/config.js`. Change them there before changing the logic:
 - [ ] Special elements by `id`/`class` in the SVG (trampolines with more bounce, sensors, moving obstacles).
 - [ ] Sounds (bounce, goal, lost ball).
 - [ ] Save progress (finished levels, score), with `try/catch` around storage.
-- [ ] PWA (`manifest.json` + service worker) to install the game on Android.
 - [ ] Support `<path>`, `<rect>` and `<circle>` in the level loader.
 - [ ] Basic tests for `parseLevel` and the game rules.
 - [ ] Move to TypeScript if the project grows.

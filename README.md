@@ -28,12 +28,26 @@ On pushes to `main` it also publishes the game to GitHub Pages: `https://<your-u
 
 One-time setup: in the repository go to **Settings → Pages** and set **Source** to **GitHub Actions**.
 
+## Play on a phone (PWA)
+
+The game works in any browser, and it can also be installed on a phone like an app. Installed, it opens in full screen, in portrait mode, and works without internet.
+
+- **Android (Chrome):** open the game, then menu `⋮` → **Install app** (or **Add to Home screen**).
+- **iPhone (Safari):** open the game, then **Share** → **Add to Home Screen**.
+
+To try the PWA on your computer, use `pnpm build` and then `pnpm preview` (the PWA is not active in `pnpm dev`).
+
+After you publish a new version, the installed app updates itself the next time it is opened (you may need to open it twice).
+
+The icons are in `public/icons/`. Change the files there to change the icon of the app (`icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png`).
+
 ## Project structure
 
 ```
 index.html        page and canvas
 styles.css        page styles
-vite.config.js    Vite settings
+vite.config.js    Vite settings and PWA settings
+public/icons/     app icons
 .github/workflows/build.yml   automatic build on push
 src/main.js       startup, screens and main loop
 src/config.js     game settings (size, gravity, balls, bars)
