@@ -42,7 +42,7 @@ src/level.js      load levels from SVG
 src/game.js       rules and physics
 src/input.js      bar placing
 src/render.js     draws the game screen and HUD
-src/ui.js         buttons and text for the menus
+src/ui.js         background, buttons and text for the menus
 src/scenes/       screens: title, level select, credits, play
 levels/           level files (.svg)
 ```

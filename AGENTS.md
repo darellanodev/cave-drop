@@ -29,7 +29,7 @@ src/level.js      load and parse SVG levels
 src/game.js       rules and physics (no drawing)
 src/input.js      bar placing (press, rotate, release)
 src/render.js     draws the game screen and HUD
-src/ui.js         helpers for menu screens (buttons, text, hit test)
+src/ui.js         helpers for menu screens (background, buttons, text, hit test)
 src/scenes/       one file per screen: title, levelSelect, credits, play
 src/assets/       images (logo)
 levels/*.svg      levels
@@ -181,7 +181,6 @@ The old Android version (2014) had more features. Already ported: title screen (
 - [ ] **Balls die by time**: a ball that lives too long turns grey and is lost.
 - [ ] **Color flash** in the HUD when a ball is saved or lost.
 - [ ] **Title screen with physics**: in the old game the title was a level where the balls fell on the logo.
-- [ ] **Twinkling background triangles** on the menus.
 - [ ] **Screens**: "Congratulations, all rooms completed" and connection error (the error screen is only needed if levels come from a server again).
 
 The old source is not part of this repository. Its logic is described above, so no need to read it again.
