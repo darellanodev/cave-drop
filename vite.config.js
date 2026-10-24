@@ -16,8 +16,7 @@ export default defineConfig({
           "A 2D physics game. Guide the balls to the goal with bars.",
         start_url: "./",
         scope: "./",
-        display: "fullscreen", // if not supported, the browser uses "standalone"
-        display_override: ["fullscreen", "standalone"],
+        display: "standalone",
         orientation: "portrait",
         background_color: "#440000",
         theme_color: "#440000",
