@@ -7,6 +7,7 @@ import {
   TOTAL_BALLS,
   MAX_LOST,
   SPAWN_INTERVAL,
+  BALL_LIFETIME,
   BALL_RADIUS,
   BAR_LENGTH,
   BAR_THICKNESS,
@@ -61,6 +62,7 @@ export class Game {
     this.lost = 0;
     this.saved = 0;
     this.lastSpawn = 0;
+    this.lastUpdate = null; // time of the previous frame, to count the life of the balls
     this.status = null; // null while playing, then 'YOU WIN' or 'YOU LOSE'
 
     for (const poly of this.level.terrain) {
@@ -94,6 +96,12 @@ export class Game {
   update(now) {
     if (this.status) return;
 
+    // Time since the previous frame. The limit avoids big jumps (for example
+    // when the tab was hidden), so the balls do not die while the game is paused.
+    const dt =
+      this.lastUpdate === null ? 0 : Math.min(now - this.lastUpdate, 100);
+    this.lastUpdate = now;
+
     const { start, goal, teleport } = this.level;
 
     if (this.spawned < TOTAL_BALLS && now - this.lastSpawn > SPAWN_INTERVAL) {
@@ -108,16 +116,19 @@ export class Game {
           frictionAir: 0,
         },
       );
+      ball.life = BALL_LIFETIME; // ms left before the ball is lost
       Composite.add(this.engine.world, ball);
       this.balls.push(ball);
       this.spawned++;
       this.lastSpawn = now;
     }
 
-    // A ball is saved in the goal, or lost when it leaves the screen or touches fire.
+    // A ball is saved in the goal, or lost when it leaves the screen, touches fire
+    // or runs out of life.
     // A ball that enters the teleport moves to the exit and keeps its speed.
     this.balls = this.balls.filter((ball) => {
       const p = ball.position;
+      ball.life -= dt;
       if (ball.burned) {
         this.lost++;
         Composite.remove(this.engine.world, ball);
@@ -131,6 +142,11 @@ export class Game {
       if (teleport && Vertices.contains(teleport.in, p)) {
         Body.setPosition(ball, teleport.exit);
         return true;
+      }
+      if (ball.life <= 0) {
+        this.lost++;
+        Composite.remove(this.engine.world, ball);
+        return false;
       }
       if (p.y > H + 20 || p.x < -20 || p.x > W + 20) {
         this.lost++;

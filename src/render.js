@@ -3,6 +3,7 @@ import {
   W,
   H,
   BAR_LENGTH,
+  BALL_FADE_TIME,
   BALL_RADIUS,
   MAX_LOST,
   MENU_BUTTON,
@@ -91,9 +92,16 @@ export function createRenderer(canvas) {
           input.preview.angle,
           "rgba(255,255,255,.5)",
         );
-      game.balls.forEach((b) =>
-        drawCircle(b.position.x, b.position.y, BALL_RADIUS, "#fff"),
-      );
+      game.balls.forEach((b) => {
+        // Near the end of its life, a ball turns from white to dark grey.
+        const grey = Math.round(255 * Math.min(1, b.life / BALL_FADE_TIME));
+        drawCircle(
+          b.position.x,
+          b.position.y,
+          BALL_RADIUS,
+          `rgb(${grey}, ${grey}, ${grey})`,
+        );
+      });
       drawHud(game);
       if (game.status) drawEndScreen(game.status);
     },

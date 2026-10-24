@@ -107,8 +107,9 @@ All in `src/config.js`. Change them there before changing the logic:
 - `TOTAL_BALLS`: balls per level (10).
 - `MAX_LOST`: the game is lost when lost balls go above this value (5).
 - `SPAWN_INTERVAL`: time between balls in ms (1200).
+- `BALL_LIFETIME`: time in ms that a ball can live before it is lost (8300, like the old game). `BALL_FADE_TIME`: ms before the end in which the ball turns from white to dark grey (4250).
 - `BAR_LENGTH`, `BAR_THICKNESS`: size of the player's bars (44 and 4 px).
-- `GRAVITY`: gravity (0.8).
+- `GRAVITY`: gravity (0.4).
 
 ## Conventions
 
@@ -188,7 +189,6 @@ The old Android version (2014) had more features. Already ported: title screen (
 - [ ] **Saved progress**: the highest level reached (and the sound option) kept between sessions.
 - [ ] **Pause dialog** while playing: CONTINUE, RESTART LEVEL, EXIT TO MENU.
 - [ ] **Timer** in the HUD (`minutes:seconds:tenths`) and the time to complete the level.
-- [ ] **Balls die by time**: a ball that lives too long turns grey and is lost.
 - [ ] **Color flash** in the HUD when a ball is saved or lost.
 - [ ] **Title screen with physics**: in the old game the title was a level where the balls fell on the logo.
 - [ ] **Screens**: "Congratulations, all rooms completed" and connection error (the error screen is only needed if levels come from a server again).
