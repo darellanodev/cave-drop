@@ -18,7 +18,7 @@ export default defineConfig({
         scope: "./",
         display: "standalone",
         orientation: "portrait",
-        background_color: "#440000",
+        background_color: "#000000",
         theme_color: "#000000", // color of the status bar and the navigation bar of Android
         icons: [
           { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
