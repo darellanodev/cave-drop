@@ -41,8 +41,11 @@ function createStaticBody(poly, options) {
 }
 
 export class Game {
-  constructor(level) {
+  // endless: the game never ends. It keeps making balls and does not count
+  // the lost ones (used for the title screen).
+  constructor(level, { endless = false } = {}) {
     this.level = level;
+    this.endless = endless;
     this.runner = null;
     this.restart();
   }
@@ -104,7 +107,8 @@ export class Game {
 
     const { start, goal, teleport } = this.level;
 
-    if (this.spawned < TOTAL_BALLS && now - this.lastSpawn > SPAWN_INTERVAL) {
+    const canSpawn = this.endless || this.spawned < TOTAL_BALLS;
+    if (canSpawn && now - this.lastSpawn > SPAWN_INTERVAL) {
       const ball = Bodies.circle(
         start.x + (Math.random() - 0.5) * 4,
         start.y,
@@ -156,6 +160,7 @@ export class Game {
       return true;
     });
 
+    if (this.endless) return;
     if (this.lost > MAX_LOST) this.status = "YOU LOSE";
     else if (this.spawned === TOTAL_BALLS && this.balls.length === 0)
       this.status = "YOU WIN";

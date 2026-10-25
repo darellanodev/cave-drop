@@ -60,7 +60,7 @@ src/input.js      bar placing
 src/render.js     draws the game screen and HUD
 src/ui.js         background, buttons and text for the menus
 src/scenes/       screens: title, level select, credits, play
-levels/           level files (.svg)
+levels/           level files (.svg), and `menu.svg` for the title screen
 ```
 
 ## Make a level

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 510">
+  <!-- Title screen: port of the old menu.svg. The logo is drawn by src/scenes/title.js. -->
+  <!-- Balls fall from the tip of the V of the logo, through the O, into the cave. -->
+  <polygon class="terrain" points="75.9,300.5 91,326 98.7,373.4 125.1,391.7 161.6,385.8 174.8,337 166.2,293.9 184.4,258.2 199.9,316.5 200.3,380.7 231.8,401.9 264.6,372 265.5,254.5 243.8,133.4 270.5,118.2 260,67.1 320,0 320,512 0,512 0,59.9 16.5,187 29.4,194.5 38,295.4"/>
+  <polygon id="goal" points="208.4,385.9 250.1,384.9 231.8,401.6"/>
+  <circle id="start" cx="185.6" cy="121.9" r="6"/>
+</svg>

@@ -30,12 +30,12 @@ src/levels.js     list of levels (LEVELS) and level cache
 src/level.js      load and parse SVG levels
 src/game.js       rules and physics (no drawing)
 src/input.js      bar placing (press, rotate, release)
-src/render.js     draws the game screen and HUD
+src/render.js     draws the game screen and HUD (`drawWorld` draws only the level and the balls)
 src/progress.js   saved progress (highest unlocked level)
 src/ui.js         helpers for menu screens (background, buttons, text, hit test)
 src/scenes/       one file per screen: title, levelSelect, credits, play
 src/assets/       images (logo)
-levels/*.svg      levels
+levels/*.svg      levels (`menu.svg` is the level of the title screen, it is not in `LEVELS`)
 ```
 
 ## Screens (scenes)
@@ -57,6 +57,7 @@ Keep each file focused on one job:
 - `render.js` only draws. It must not change the game state.
 - `input.js` only turns pointer positions into bars (`game.addBar`). It does not listen to the browser: `main.js` sends the events.
 - `scenes/*.js` are the screens. Menu screens draw with `ui.js`. The play screen uses `game.js`, `input.js` and `render.js`.
+- The title screen also uses `game.js` and `render.js`: it runs `levels/menu.svg` in an endless game (`new Game(level, { endless: true })`). The balls fall from the logo and are drawn behind the buttons. It never ends and does not count lost balls.
 
 ## How to run
 
@@ -194,7 +195,7 @@ The level select shows 6 columns of buttons (up to 36 levels, 6 rows). For more 
 
 ## Port from the old Processing version
 
-The old Android version (2014) had more features. Already ported: title screen (START, CREDITS), level select with locked levels and saved progress, teleports, and 32 levels (all the old levels from `cnivel1` to `cnivel31`). Still to port, in the old game:
+The old Android version (2014) had more features. Already ported: title screen with physics (START, CREDITS), level select with locked levels and saved progress, teleports, and 32 levels (all the old levels from `cnivel1` to `cnivel31`). Still to port, in the old game:
 
 - [ ] **Sound button** on the title screen (ON/OFF) and the sound effects (button, enter goal, lost ball, level completed or failed, teleport).
 - [ ] **Level select with caves**: pages of 16 levels with `<<` and `>>`, and an `END` button after the last level.
@@ -202,7 +203,6 @@ The old Android version (2014) had more features. Already ported: title screen (
 - [ ] **Pause dialog** while playing: CONTINUE, RESTART LEVEL, EXIT TO MENU.
 - [ ] **Timer** in the HUD (`minutes:seconds:tenths`) and the time to complete the level.
 - [ ] **Color flash** in the HUD when a ball is saved or lost.
-- [ ] **Title screen with physics**: in the old game the title was a level where the balls fell on the logo.
 - [ ] **Screens**: "Congratulations, all rooms completed" and connection error (the error screen is only needed if levels come from a server again).
 
 The old source is not part of this repository. Its logic is described above, so no need to read it again.

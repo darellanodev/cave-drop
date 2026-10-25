@@ -69,39 +69,46 @@ export function createRenderer(canvas) {
     ctx.textAlign = "left";
   }
 
+  // Draw the level and the balls, without the background and the top bar.
+  // `input` is optional: it has the bar that the player is placing.
+  function drawWorld(game, input) {
+    const { terrain, fire, goal, start, teleport } = game.level;
+    terrain.forEach((poly) => drawPolygon(poly, "#8a8fb5"));
+    fire.forEach((poly) => drawPolygon(poly, "#f00"));
+    drawPolygon(goal, "#ff0");
+    if (teleport) {
+      drawPolygon(teleport.in, "#00f");
+      drawPolygon(teleport.out, "#00f");
+    }
+    drawCircle(start.x, start.y, 6, "#000");
+    game.bars.forEach((b) =>
+      drawBar(b.position.x, b.position.y, b.angle, "#fff"),
+    );
+    if (input && input.preview)
+      drawBar(
+        input.preview.x,
+        input.preview.y,
+        input.preview.angle,
+        "rgba(255,255,255,.5)",
+      );
+    game.balls.forEach((b) => {
+      // Near the end of its life, a ball turns from white to dark grey.
+      const grey = Math.round(255 * Math.min(1, b.life / BALL_FADE_TIME));
+      drawCircle(
+        b.position.x,
+        b.position.y,
+        BALL_RADIUS,
+        `rgb(${grey}, ${grey}, ${grey})`,
+      );
+    });
+  }
+
   return {
+    drawWorld,
     draw(game, input) {
-      const { terrain, fire, goal, start, teleport } = game.level;
       ctx.fillStyle = "#400";
       ctx.fillRect(0, 0, W, H);
-      terrain.forEach((poly) => drawPolygon(poly, "#8a8fb5"));
-      fire.forEach((poly) => drawPolygon(poly, "#f00"));
-      drawPolygon(goal, "#ff0");
-      if (teleport) {
-        drawPolygon(teleport.in, "#00f");
-        drawPolygon(teleport.out, "#00f");
-      }
-      drawCircle(start.x, start.y, 6, "#000");
-      game.bars.forEach((b) =>
-        drawBar(b.position.x, b.position.y, b.angle, "#fff"),
-      );
-      if (input.preview)
-        drawBar(
-          input.preview.x,
-          input.preview.y,
-          input.preview.angle,
-          "rgba(255,255,255,.5)",
-        );
-      game.balls.forEach((b) => {
-        // Near the end of its life, a ball turns from white to dark grey.
-        const grey = Math.round(255 * Math.min(1, b.life / BALL_FADE_TIME));
-        drawCircle(
-          b.position.x,
-          b.position.y,
-          BALL_RADIUS,
-          `rgb(${grey}, ${grey}, ${grey})`,
-        );
-      });
+      drawWorld(game, input);
       drawHud(game);
       if (game.status) drawEndScreen(game.status);
     },

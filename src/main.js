@@ -36,7 +36,7 @@ function goTo(name, params) {
 }
 
 Object.assign(scenes, {
-  title: createTitleScene({ ctx, goTo }),
+  title: createTitleScene({ ctx, canvas, goTo }),
   levels: createLevelSelectScene({ ctx, goTo }),
   credits: createCreditsScene({ ctx, goTo }),
   play: createPlayScene({ canvas, goTo }),
